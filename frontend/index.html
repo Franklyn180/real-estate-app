@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>RealtyOne Estate</title>
+    <meta name="description" content="Luxury real estate agency website" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="config.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="container navbar">
+        <div class="brand">REALTYONE</div>
+        <nav>
+          <ul class="nav-links">
+            <li><a href="#listings">Listings</a></li>
+            <li><a href="#agents">Agents</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-inner">
+          <div>
+            <p>Luxury homes and smart investments</p>
+            <h1>Find the place that fits your future.</h1>
+            <p>
+              We help buyers, sellers, and investors discover premium properties in the most desirable neighborhoods.
+            </p>
+            <div class="cta-row">
+              <a class="button primary" href="#listings">View Listings</a>
+              <a class="button secondary" href="#contact">Book a Tour</a>
+            </div>
+          </div>
+
+          <aside class="stats-box">
+            <div class="stat-item"><span>Properties sold</span><strong>2,400+</strong></div>
+            <div class="stat-item"><span>Average ROI</span><strong>18.4%</strong></div>
+            <div class="stat-item"><span>Happy clients</span><strong>96%</strong></div>
+            <div class="stat-item"><span>Market coverage</span><strong>12 cities</strong></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section" id="listings">
+        <div class="container">
+          <h2 class="section-title">Featured properties</h2>
+          <p class="section-subtitle">Explore hand-picked homes and investment opportunities.</p>
+          <div id="propertyGrid" class="property-grid"></div>
+        </div>
+      </section>
+
+      <section class="section" id="agents">
+        <div class="container">
+          <h2 class="section-title">Meet our advisors</h2>
+          <p class="section-subtitle">Experienced professionals who understand every neighborhood.</p>
+          <div id="agentGrid" class="agent-grid"></div>
+        </div>
+      </section>
+
+      <section class="section" id="contact">
+        <div class="container enquiry-wrap">
+          <div class="info-panel">
+            <h3>Let's find your next address.</h3>
+            <p>
+              Tell us your goals and we will help you find the right home or investment with confidence.
+            </p>
+            <ul class="contact-list">
+              <li>📞 +1 (800) 555-0147</li>
+              <li>📍 901 Harbor Lane, Suite 200</li>
+              <li>✉️ hello@realtyone.com</li>
+            </ul>
+          </div>
+
+          <div class="form-card">
+            <form id="enquiryForm">
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="name">Full name</label>
+                  <input id="name" name="name" type="text" placeholder="John Smith" required />
+                </div>
+                <div class="form-field">
+                  <label for="email">Email</label>
+                  <input id="email" name="email" type="email" placeholder="john@example.com" required />
+                </div>
+              </div>
+
+              <div class="form-field">
+                <label for="propertyId">Interested property</label>
+                <select id="propertyId" name="propertyId">
+                  <option value="">Any property</option>
+                  <option value="1">Harbor View Villa</option>
+                  <option value="2">City Heights Condo</option>
+                  <option value="3">Maple Grove Residence</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" placeholder="Tell us about your property goals..."></textarea>
+              </div>
+
+              <button type="submit">Send enquiry</button>
+              <div id="statusMessage" class="status" aria-live="polite"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">© 2026 RealtyOne Estate. Smart living starts here.</div>
+    </footer>
+
+    <script src="app.js"></script>
+  </body>
+</html>

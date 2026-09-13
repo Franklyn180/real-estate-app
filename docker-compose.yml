@@ -1,0 +1,70 @@
+services:
+  db:
+    image: mysql:8.0
+    container_name: estate-db
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+    healthcheck:
+      test: ["CMD", "mysql", "-h", "localhost", "-u", "${MYSQL_USER}", "-p${MYSQL_PASSWORD}", "${MYSQL_DATABASE}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+    ports:
+      - "3306:3306"
+
+    volumes: 
+      - ./data:/data
+
+  backend:
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    image: estate-backend:v1.0
+    container_name: estate-backend
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "5000:5000"
+
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend:/app
+      - ./database:/database
+
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: estate-frontend:v1.0
+    container_name: estate-frontend
+    environment:
+      - API_URL=${API_URL}
+    ports:
+      - "8081:80"
+    depends_on:
+      - backend
+
+    volumes:
+      - ./frontend:/app
+
+volumes:
+  data:
+
+    
+
+    
+      
+  
