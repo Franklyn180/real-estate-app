@@ -10,7 +10,7 @@ on:
     branches:
       - main
 jobs:
-  quality-checks:
+  Application-tests:
     runs-on: self-hosted
 
     env:
