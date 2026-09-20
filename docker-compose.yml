@@ -25,7 +25,7 @@ services:
     build: 
       context: ./backend
       dockerfile: Dockerfile
-    image: estate-backend:v1.0
+    image: ${BACKEND_IMAGE:-estate-backend:v1.0}
     container_name: estate-backend
     environment:
       - DB_HOST=${DB_HOST}
@@ -48,7 +48,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: estate-frontend:v1.0
+    image: ${FRONTEND_IMAGE:-estate-frontend:v1.0}
     container_name: estate-frontend
     environment:
       - API_URL=${API_URL}
