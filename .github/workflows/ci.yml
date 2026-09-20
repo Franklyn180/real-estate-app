@@ -1,0 +1,53 @@
+name: Real Estate App CI
+
+on:
+  push:
+    branches: 
+      - main
+      - develop
+
+  pull_request:
+    branches:
+      - main
+jobs:
+  quality-checks:
+    runs-on: self-hosted
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: "npm"
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: npm ci
+
+      - name: Run backend Lint
+        working-directory: backend
+        run: npm run lint
+
+      - name: Run backend tests
+        working-directory: backend
+        run: npm test
+
+      - name: Run security dependencies audit
+        working-directory: backend
+        run: npm audit --audit-level=high
+
+      - name: Run sonarqube analysis
+        uses: SonarSource/sonarqube-scan-action@v5
+        with:
+          args: >
+            -Dsonar.qualitygate.wait=true
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          SONAR_HOST_URL: http://localhost:9000
+
+      - name: Build Docker images
+        run: docker compose -f docker-compose.yml build
