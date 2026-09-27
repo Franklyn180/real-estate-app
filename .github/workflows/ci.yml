@@ -67,3 +67,5 @@ jobs:
         run: |
           docker push "$BACKEND_IMAGE"
           docker push "$FRONTEND_IMAGE"
+
+      
