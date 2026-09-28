@@ -1,30 +1,54 @@
 name: Real Estate App CD
+
 on:
-  workflow_run:
-    workflows: ["Real Estate App CI"]
-    types:
-      - completed
+  workflow_call:
+    secrets:
+      DOCKERHUB_USERNAME:
+        required: true
+      DOCKERHUB_TOKEN:
+        required: true
+      DB_NAME:
+        required: true
+      DB_USER:
+        required: true
+      DB_PASSWORD:
+        required: true
+      MYSQL_ROOT_PASSWORD:
+        required: true
+      MYSQL_DATABASE:
+        required: true
+      MYSQL_USER:
+        required: true
+      MYSQL_PASSWORD:
+        required: true
 
 jobs:
   deploy:
-    if: >
-      github.event.workflow_run.conclusion == 'success' &&
-      github.event.workflow_run.head_branch == 'main' 
-
     runs-on: self-hosted
 
     env:
-          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
-          IMAGE_TAG: ${{ github.event.workflow_run.head_sha }}
-    
-    steps: 
-      - name: Confirm CI workflow run was successful
-        run: |
-          echo "CI workflow run was successful."
-          echo "Branch: ${{ github.event.workflow_run.head_branch }}"
-          echo "Commit SHA: ${{ github.event.workflow_run.head_sha }}"
+      DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      IMAGE_TAG: ${{ github.sha }}
+      BACKEND_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/real-estate-backend:${{ github.sha }}
+      FRONTEND_IMAGE: ${{ secrets.DOCKERHUB_USERNAME }}/real-estate-frontend:${{ github.sha }}
+      DB_NAME: ${{ secrets.DB_NAME }}
+      DB_USER: ${{ secrets.DB_USER }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+      MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+      MYSQL_USER: ${{ secrets.MYSQL_USER }}
+      MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
 
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v4
         
+      - name: Confirm CI workflow was successful
+        run: |
+          echo "CI workflow was successful."
+          echo "Commit SHA: ${{ github.sha }}"
+
       - name: Login to DockerHub
         uses: docker/login-action@v3
         with:
@@ -41,7 +65,7 @@ jobs:
 
       - name: Deploy Application
         run: |
-          docker compose -f docker-compose.prod.yml up -d 
+          docker compose -f docker-compose.prod.yml up -d
 
             
 
